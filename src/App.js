@@ -2,10 +2,11 @@ import React, { useState } from "react";
 
 import EmojiResults from "./components/EmojiResults";
 import EmojiForm from "./components/EmojiForm";
-import SearchInput from "./components/SearchInput";
+import EmojiSearch from "./components/EmojiSearch";
 import Header from "./components/Header/Header";
 import Paginator from "./components/Paginator";
-import filterEmoji from "./filterEmoji";
+
+import filterEmoji from "./utils/filterEmoji";
 
 const emojisPerPage = 5;
 
@@ -42,6 +43,7 @@ const App = () => {
     const updatedEmojis = emojiData.map((emoji) =>
       emoji.title === title ? { ...emoji, softDeleted: true } : emoji
     );
+  
     setEmojiData(updatedEmojis);
   };
 
@@ -57,7 +59,7 @@ const App = () => {
   return (
     <div className="mx-2 my-4">
       <Header />
-      <SearchInput textChange={handleSearchChange} />
+      <EmojiSearch textChange={handleSearchChange} />
       <EmojiForm
         editingEmoji={editingEmoji}
         onAddEditEmoji={handleAddEditEmoji}
