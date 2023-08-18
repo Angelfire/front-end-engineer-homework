@@ -21,7 +21,7 @@ const Paginator = ({ currentPage, totalPages, onPageChange }) => {
   const pageNumbers = generatePageNumbers(totalPages);
 
   return (
-    <nav aria-label="Page navigation" className="d-flex justify-content-center">
+    <nav aria-label="Page navigation" className="d-flex justify-content-center mt-5">
       <ul className="pagination">
         {pageNumbers.map((number) => (
           <li key={number} className="page-item">

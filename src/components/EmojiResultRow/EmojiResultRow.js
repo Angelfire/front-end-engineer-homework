@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
+import Modal from "react-bootstrap/Modal";
 
 import "./EmojiResultRow.css";
 
@@ -21,7 +22,9 @@ const generateEmojiImageUrl = (symbol) => {
   return imageUrl;
 };
 
-const EmojiResultRow = ({ title, symbol }) => {
+const EmojiResultRow = ({ title, symbol, onEdit, onDelete }) => {
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
   const imageUrl = generateEmojiImageUrl(symbol);
 
   const handleCopyToClipboard = () => {
@@ -38,11 +41,38 @@ const EmojiResultRow = ({ title, symbol }) => {
         <span className="title">{title}</span>
       </div>
       <span className="info">Click to copy emoji</span>
+      <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+        <button className="btn btn-primary" onClick={() => onEdit({ title, symbol })}>
+          Edit
+        </button>
+        <button className="btn btn-danger" onClick={() => setDeleteModalVisible(true)}>
+          Delete
+        </button>
+      </div>
+
+      <Modal show={deleteModalVisible} onHide={() => setDeleteModalVisible(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete this emoji?
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-secondary" onClick={() => setDeleteModalVisible(false)}>
+            Cancel
+          </button>
+          <button className="btn btn-danger" onClick={() => onDelete(title)}>
+            Delete
+          </button>
+        </Modal.Footer>
+      </Modal>
     </li>
   );
 };
 
 EmojiResultRow.propTypes = {
+  onEdit: PropTypes.func,
+  onDelete: PropTypes.func,
   title: PropTypes.string,
   symbol: PropTypes.string
 };

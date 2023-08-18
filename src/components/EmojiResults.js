@@ -4,7 +4,7 @@ import Clipboard from "clipboard";
 
 import EmojiResultRow from "./EmojiResultRow/EmojiResultRow";
 
-const EmojiResults = ({ emojiData }) => {
+const EmojiResults = ({ emojiData, onEditEmoji, onDeleteEmoji }) => {
   // useEffect instead of componentDidMount and componentWillUnmount
   useEffect(() => {
     const clipboard = new Clipboard(".copy-to-clipboard");
@@ -21,6 +21,8 @@ const EmojiResults = ({ emojiData }) => {
           key={emojiData.title}
           symbol={emojiData.symbol}
           title={emojiData.title}
+          onEdit={onEditEmoji}
+          onDelete={onDeleteEmoji}
         />
       ))}
     </ul>
@@ -28,7 +30,9 @@ const EmojiResults = ({ emojiData }) => {
 };
 
 EmojiResults.propTypes = {
-  emojiData: PropTypes.array
+  emojiData: PropTypes.array,
+  onEditEmoji: PropTypes.func,
+  onDeleteEmoji: PropTypes.func
 };
 
 export default EmojiResults;
