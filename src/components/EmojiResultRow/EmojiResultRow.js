@@ -7,7 +7,6 @@ import "./EmojiResultRow.css";
 /**
  * Convert the Unicode code point of an emoji symbol to a hexadecimal string
  * and construct a URL to fetch the corresponding PNG image from a CDN.
- * This code is used to display emoji images in the EmojiResultRow component.
  *
  * @param {string} symbol - The emoji symbol character.
  * @returns {string} The URL to the PNG image corresponding to the emoji symbol.
