@@ -1,7 +1,37 @@
 import React, { useState, useEffect } from "react";
 
+/**
+ * Validates an emoji title to ensure it contains only letters and spaces.
+ *
+ * @param {string} title - The emoji title to be validated.
+ * @returns {string} An error message if the title is invalid, otherwise an empty string.
+ *
+ */
+const validateTitle = (title) => {
+  if (!/^[A-Za-z\s]+$/.test(title)) {
+    return "Emoji Name should only contain letters and spaces.";
+  }
+  return "";
+};
+
+/**
+ * Validates an emoji symbol to ensure it contains only valid symbols (non-alphanumeric characters).
+ *
+ * @param {string} symbol - The emoji symbol to be validated.
+ * @returns {string} An error message if the symbol is invalid, otherwise an empty string.
+ *
+ */
+const validateSymbol = (symbol) => {
+  if (!/^[^\w\s]+$/.test(symbol)) {
+    return "Emoji Symbol should only contain valid symbols.";
+  }
+  return "";
+};
+
 const EmojiForm = ({ editingEmoji, onAddEditEmoji }) => {
   const [emoji, setEmoji] = useState({ title: "", symbol: "" });
+  const [titleError, setTitleError] = useState("");
+  const [symbolError, setSymbolError] = useState("");
 
   useEffect(() => {
     if (editingEmoji) {
@@ -11,10 +41,30 @@ const EmojiForm = ({ editingEmoji, onAddEditEmoji }) => {
     }
   }, [editingEmoji]);
 
+  const handleTitleChange = (e) => {
+    const { value } = e.target;
+    setEmoji({ ...emoji, title: value });
+    setTitleError(validateTitle(value));
+  };
+
+  const handleSymbolChange = (e) => {
+    const { value } = e.target;
+    setEmoji({ ...emoji, symbol: value });
+    setSymbolError(validateSymbol(value));
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    onAddEditEmoji(emoji);
-    setEmoji({ title: "", symbol: "" });
+
+    const titleValidationError = validateTitle(emoji.title);
+    const symbolValidationError = validateSymbol(emoji.symbol);
+
+    if (!titleValidationError && !symbolValidationError) {
+      onAddEditEmoji(emoji);
+      setEmoji({ title: "", symbol: "" });
+      setTitleError("");
+      setSymbolError("");
+    }
   };
 
   return (
@@ -28,11 +78,12 @@ const EmojiForm = ({ editingEmoji, onAddEditEmoji }) => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${titleError ? "is-invalid" : ""}`}
               id="title"
               value={emoji.title}
-              onChange={(e) => setEmoji({ ...emoji, title: e.target.value })}
+              onChange={handleTitleChange}
             />
+            {titleError && <div className="invalid-feedback">{titleError}</div>}
           </div>
           <div className="mb-3">
             <label htmlFor="symbol" className="form-label">
@@ -40,11 +91,12 @@ const EmojiForm = ({ editingEmoji, onAddEditEmoji }) => {
             </label>
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${symbolError ? "is-invalid" : ""}`}
               id="symbol"
               value={emoji.symbol}
-              onChange={(e) => setEmoji({ ...emoji, symbol: e.target.value })}
+              onChange={handleSymbolChange}
             />
+            {symbolError && <div className="invalid-feedback">{symbolError}</div>}
           </div>
           <button type="submit" className="btn btn-primary">
             {editingEmoji ? "Save Changes" : "Add Emoji"}
