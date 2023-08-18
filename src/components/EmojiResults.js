@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
-import Clipboard from "clipboard";
 import PropTypes from "prop-types";
+import Clipboard from "clipboard";
 
 import EmojiResultRow from "./EmojiResultRow/EmojiResultRow";
 
